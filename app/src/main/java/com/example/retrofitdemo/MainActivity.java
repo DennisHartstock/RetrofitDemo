@@ -1,10 +1,13 @@
 package com.example.retrofitdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.retrofitdemo.adapters.CountryAdapter;
 import com.example.retrofitdemo.model.CountryInfo;
 import com.example.retrofitdemo.model.Result;
 import com.example.retrofitdemo.service.CountryService;
@@ -18,6 +21,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Result> resultArrayList;
+    private CountryAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +45,11 @@ public class MainActivity extends AppCompatActivity {
                     resultArrayList = (ArrayList<Result>) countryInfo.getRestResponse().getResult();
                 }
 
-                for (Result result : resultArrayList) {
-                    Log.d("resultArrayList: ", result.getName());
-                }
+//                for (Result result : resultArrayList) {
+//                    Log.d("resultArrayList: ", result.getName());
+//                }
+
+                fillRecyclerView();
             }
 
             @Override
@@ -51,5 +58,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return resultArrayList;
+    }
+
+    private void fillRecyclerView() {
+        recyclerView = findViewById(R.id.recyclerView);
+        adapter = new CountryAdapter(resultArrayList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
 }
